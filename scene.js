@@ -9,23 +9,18 @@ kaboom({
 
 console.log("hello world")
 
-loadRoot("https://i.imgur.com/")
+loadRoot("https://raw.githubusercontent.com/Lu1s16/War-of-tanks/refs/heads/main/sprites/")
 
-loadSprite("tank", "e4NbbLg.png")
-loadSprite("tank-left", "TJ4VC49.png")
-loadSprite("tank-right", "orubOGI.png")
-loadSprite("tank-down", "iq15IJi.png")
+loadSprite("tank", "Tanque.png")
+loadSprite("tank-left", "Tanque.png")
+loadSprite("tank-right", "Tanque.png")
+loadSprite("tank-down", "Tanque.png")
 
-loadSprite("bullet", "1sBk4rh.png")
+loadSprite("bullet", "Bloque.png")
 
-loadSprite("bloque", "JtnrTFc.png")
+loadSprite("bloque", "Bloque.png")
 
-const player = add([
-    sprite("tank"),
-    scale(5),
-    pos(120, 200),
-    
-])
+
 
 
 //propiedades del tanque
@@ -38,127 +33,131 @@ var can_shoot_right = true
 //propiedades de la bala
 const speedBullet = 300
 var colision = false
-var movements_bullet = 0 
+var movements_bullet = 0
 
-function shoot(){
-
-    //obtener los atributos del "player"
-    const tank = get("player")[0]
-    const position = tank.pos
-
-
-    if(orientacion == "right" & can_shoot_right){
-        console.log(can_shoot_right)
-       
-        add([
-            sprite("bullet"),
-            scale(2),
-            pos(position.x+80,position.y+53),
-            origin("center"),
-            "bullet-right",
-
-        ])
-
-        const bullet_right = get("bullet-right")[0]
-
-        loop(1, () =>{
-            bullet_right.move(speedBullet, 0)
-            movements_bullet++
-            console.log(movements_bullet)
-
-            if(movements_bullet == 7){
-                destroyAll("bullet-right")
-                can_shoot = true
-               
-
-               
-
-            }
-
-        })
-        
-        
-        
-
-    } else if(orientacion == "left"){
-        add([
-            sprite("bullet"),
-            scale(2),
-            pos(position.x-15, position.y+53),
-            origin("center")
-        ])
-    } else if(orientacion == "up"){
-        add([
-            sprite("bullet"),
-            scale(2),
-            pos(position.x+34, position.y+10),
-            origin("center")
-        ])
-    } else if(orientacion == "down"){
-        add([
-            sprite("bullet"),
-            scale(2),
-            pos(position.x+34, position.y+100),
-            origin("center")
-
-        ])
-
-    }
-
-}
+//function shoot() {
+//
+//    //obtener los atributos del "player"
+//    const tank = get("player")[0]
+//    const position = tank.worldPos()
+//
+//
+//    if (orientacion == "right" & can_shoot_right) {
+//        console.log(can_shoot_right)
+//
+//        add([
+//            sprite("bullet"),
+//            scale(2),
+//            pos(position.x + 80, position.y + 53),
+//            origin("center"),
+//            area(),
+//            "bullet-right",
+//
+//        ])
+//
+//        const bullet_right = get("bullet-right")[0]
+//
+//        loop(1, () => {
+//            bullet_right.move(speedBullet, 0)
+//            movements_bullet++
+//            console.log(movements_bullet)
+//
+//            if (movements_bullet == 7) {
+//                destroyAll("bullet-right")
+//                can_shoot = true
+//
+//
+//
+//
+//            }
+//
+//        })
+//
+//
+//
+//
+//    } else if (orientacion == "left") {
+//        add([
+//            sprite("bullet"),
+//            scale(2),
+//            pos(position.x - 15, position.y + 53),
+//            origin("center")
+//        ])
+//    } else if (orientacion == "up") {
+//        add([
+//            sprite("bullet"),
+//            scale(2),
+//            pos(position.x + 34, position.y + 10),
+//            origin("center")
+//        ])
+//    } else if (orientacion == "down") {
+//        add([
+//            sprite("bullet"),
+//            scale(2),
+//            pos(position.x + 34, position.y + 100),
+//            origin("center")
+//
+//        ])
+//
+//    }
+//
+//}
 
 const levels = [
     [
-        "############",
-        "#          #",
-        "#          #",
-        "###        #",
-        "#          #",
-        "#         ##",
-        "#          #",
-        "#          #",
-        "#&         #",
-        "############",
+        "##########",
+        "#        #",
+        "#        #",
+        "###      #",
+        "#        #",
+        "#       ##",
+        "#        #",
+        "#    #   #",
+        "#&       #",
+        "##########",
     ],
 ]
 
 
 
 //scene("nombre", (parametros)=>{})
-scene("game", ()=>{
+scene("game", () => {
 
     const level = addLevel(levels[0], {
-        width: 63.4, //ancho, obligatorio
-        height: 63.4, //alto, obligatorio
+        tileWidth: 63.4, //ancho, obligatorio
+        tileHeight: 63.4, //alto, obligatorio
         pos: vec2(100, 100),
-        "#": () => [
-            sprite("bloque"),
-            scale(1.9),
-            //component gives the object a collider, which enables collision checking
-            area(),
-            //para que no sea pasable
-            solid(),
+        tiles: {
+            "#": () => [
+                sprite("bloque"),
+                scale(2),
+                //component gives the object a collider, which enables collision checking
+                area(),
+                //para que no sea pasable
+                
+                body()
 
-        ],
+            ],
 
-        "&": () => [
-            sprite("tank"),
-            scale(1.9),
-            area(),
-            solid(),
-            //etiqueta
-            "player",
-        ]
+            "&": () => [
+                sprite("tank"),
+                scale(1.9),
+                area(),
+                body(),
+               
+                //etiqueta
+                "player",
+            ]
+        },
+        
+
     })
 
     //get("etiqueta")
     const player = get("player")[0]
 
     //posicionar la camara en el jugador
-    player.onUpdate(() => {
-
-        camPos(player.pos)
-    })
+    
 
     onKeyDown("left", () => {
         orientacion = "left"
@@ -173,14 +172,14 @@ scene("game", ()=>{
         player.move(-speed, 0)
     })
 
-    onKeyDown("right", ()=> {
+    onKeyDown("right", () => {
 
-        
+
 
 
         orientacion = "right"
 
-    
+
 
 
         player.use(sprite("tank-right"))
@@ -205,12 +204,12 @@ scene("game", ()=>{
     })
 
 
-    
+
 
     onKeyPress("space", () => {
- 
-        shoot()
-        
+
+        //shoot()
+
 
 
     })
