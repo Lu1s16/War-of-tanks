@@ -101,7 +101,7 @@ var movements_bullet = 0
 //
 //    }
 //
-//}
+//}fff
 
 //linea rama mover
 
